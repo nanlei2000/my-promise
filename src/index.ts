@@ -17,13 +17,19 @@ interface Resolve<T> {
 interface Reject {
   (reason?: any): void;
 }
-export class MyPromise<T> {
+class MyPromise<T> {
   private state: State = State.PENDING;
   private value: T | undefined = undefined;
   private reason: any = undefined;
   private onResolvedCallbacks: Resolve<T>[] = [];
   private onRejectedCallbacks: Reject[] = [];
   constructor(executor: Executor<T>) {
+    // 参数效验
+    if (typeof executor !== 'function') {
+      throw new TypeError(`Promise resolver ${executor} is not a function`);
+    }
+    this.resolve = this.resolve.bind(this);
+    this.reject = this.reject.bind(this);
     try {
       executor(this.resolve, this.reject);
     } catch (error) {
@@ -32,7 +38,6 @@ export class MyPromise<T> {
   }
 
   private resolve(value?: T): void {
-    console.log(this);
     if (this.state === State.PENDING) {
       this.state = State.FULFILLED;
       this.value = value;
@@ -104,6 +109,16 @@ export class MyPromise<T> {
     return this.then(() => {}, onrejected) as MyPromise<R2>;
   }
 }
+// 实现一个promise的延迟对象 defer
+// @ts-ignore
+MyPromise.defer = MyPromise.deferred = function() {
+  let dfd: any = {};
+  dfd.promise = new MyPromise((resolve, reject) => {
+    dfd.resolve = resolve;
+    dfd.reject = reject;
+  });
+  return dfd;
+};
 const assertNever = (value: never) => {
   value;
 };
@@ -122,6 +137,7 @@ function resolvePromise<T1, T2>(
     reject(new TypeError('Chaining cycle detected for promise'));
   }
   let called = false;
+
   // 判断 x 的类型
   if (x instanceof MyPromise) {
     x.then(
@@ -140,24 +156,24 @@ function resolvePromise<T1, T2>(
         then.call(
           x,
           (value: any) => {
+            if (called) return;
+            called = true;
             resolvePromise(newPromise, value, resolve, reject);
           },
           (reason: any) => {
+            if (called) return;
+            called = true;
             reject(reason);
           }
         );
       } else {
         // 不是 promise 的对象或函数
-        if (called) {
-          return;
-        }
+        if (called) return;
         called = true;
         resolve(x);
       }
     } catch (error) {
-      if (called) {
-        return;
-      }
+      if (called) return;
       called = true;
       reject(error);
     }
@@ -165,15 +181,4 @@ function resolvePromise<T1, T2>(
     resolve(x);
   }
 }
-
-const a = new MyPromise(resolve => {
-  setTimeout(() => {
-    resolve();
-  }, 1000);
-});
-a.then(() => {
-  console.log(1);
-});
-a.then(() => {
-  console.log(2);
-});
+module.exports = MyPromise;
