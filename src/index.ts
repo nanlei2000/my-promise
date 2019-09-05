@@ -51,10 +51,9 @@ class MyPromise<T> {
       this.onRejectedCallbacks.forEach(cb => cb(this.reason));
     }
   }
-
-  public then<R1, R2 = undefined>(
-    onfulfilled?: (value: T) => R1 | MyPromise<R1>,
-    onrejected?: (reason: any) => R2 | MyPromise<R2>
+  public then<R1 = T, R2 = never>(
+    onfulfilled?: ((value: T) => R1 | PromiseLike<R1>) | undefined | null,
+    onrejected?: ((reason: any) => R2 | PromiseLike<R2>) | undefined | null
   ): MyPromise<R1 | R2> {
     if (typeof onfulfilled !== 'function') {
       onfulfilled = value => (value as any) as R1;
@@ -105,8 +104,13 @@ class MyPromise<T> {
     return newPromise;
   }
 
-  public catch<R2>(onrejected?: (reason: any) => R2): MyPromise<R2> {
-    return this.then(() => {}, onrejected) as MyPromise<R2>;
+  public catch<TResult = never>(
+    onrejected?:
+      | ((reason: any) => TResult | PromiseLike<TResult>)
+      | undefined
+      | null
+  ): MyPromise<TResult | T> {
+    return this.then(undefined, onrejected);
   }
 }
 // 实现一个promise的延迟对象 defer
@@ -181,4 +185,4 @@ function resolvePromise<T1, T2>(
     resolve(x);
   }
 }
-module.exports = MyPromise;
+export = MyPromise;
