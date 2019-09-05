@@ -1,0 +1,23 @@
+{
+  "name": "my-promise",
+  "version": "1.0.0",
+  "description": "",
+  "main": "his-promise.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nanlei2000/my-promise.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nanlei2000/my-promise/issues"
+  },
+  "homepage": "https://github.com/nanlei2000/my-promise#readme",
+  "dependencies": {
+    "@types/node": "^12.0.10"
+  }
+}
