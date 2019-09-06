@@ -4,7 +4,8 @@
   "description": "",
   "main": "his-promise.js",
   "scripts": {
-    "test": "tsc &&  promises-aplus-tests ./dist/"
+    "test": "tsc &&  promises-aplus-tests ./dist/",
+    "test:ext": "ts-node ./test/test.ts"
   },
   "repository": {
     "type": "git",

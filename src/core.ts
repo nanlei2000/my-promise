@@ -217,7 +217,7 @@ class MyPromise<T> {
         }
       } catch (error) {
         reject(error);
-        isRejected = false;
+        isRejected = true;
       }
     });
   }
