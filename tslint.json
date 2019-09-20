@@ -1,0 +1,72 @@
+{
+  "defaultSeverity": "warn",
+  "extends": ["tslint:recommended", "tslint-config-prettier"],
+  "jsRules": {},
+  "rules": {
+    // "quotemark": [true, "single"],
+    "indent": [true],
+    "interface-name": [false],
+    "arrow-parens": false,
+    // Pending fix for shorthand property names.
+    "object-literal-sort-keys": false,
+    "semicolon": false,
+    "trailing-comma": false,
+    "member-access": true,
+    "align": false,
+    // "variable-name": false,
+    "ordered-imports": false,
+    "no-shadowed-variable": false,
+    "no-namespace": false,
+    "max-classes-per-file": false,
+    "typedef": [
+      true,
+      "call-signature",
+      // "arrow-call-signature",
+      "parameter",
+      // "arrow-parameter",
+      "property-declaration",
+      // "variable-declaration",
+      "member-variable-declaration"
+      // "object-destructuring",
+      // "array-destructuring"
+    ],
+    "array-type": false,
+    "no-non-null-assertion": false,
+    // "no-unnecessary-type-assertion": true,
+    "no-any": true,
+    // "member-ordering":false
+    "completed-docs": false,
+    // TODO:
+    "member-ordering": false,
+    "arrow-return-shorthand": false,
+    "type-literal-delimiter": false,
+    "prefer-function-over-method": false,
+    "no-inferrable-types": false,
+    "no-submodule-imports": false,
+    "no-implicit-dependencies": false,
+    "only-arrow-functions": false,
+    "ban-types": {
+      "options": [
+        ["Object", "Avoid using the `Object` type. Did you mean `object`?"],
+        // [
+        //   "Function",
+        //   "Avoid using the `Function` type. Prefer a specific function type, like `() => void`, or use `ts.AnyFunction`."
+        // ],
+        ["Boolean", "Avoid using the `Boolean` type. Did you mean `boolean`?"],
+        ["Number", "Avoid using the `Number` type. Did you mean `number`?"],
+        ["String", "Avoid using the `String` type. Did you mean `string`?"]
+      ]
+    },
+    "newline-before-return": false,
+    "unnecessary-else": false,
+    "prefer-conditional-expression": false,
+    "no-default-export": false,
+    "prefer-template": false,
+    "callable-types": false,
+    "jsdoc-format": false,
+    "no-unused-expression": [false, "allow-fast-null-checks", "allow-new", "allow-tagged-template"],
+    "no-null-keyword": true
+    // "cyclomatic-complexity": true,,
+  },
+  "rulesDirectory": []
+}

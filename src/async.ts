@@ -1,17 +1,19 @@
 import Promise = require('./core');
 
 const isPromise = (obj: any): obj is Promise<any> => {
-  return !!obj && 'function' == typeof obj.then;
+  return !!obj && 'function' === typeof obj.then;
 };
-const toPromise = <T extends any>(obj: T): T | Promise<T> => {
+const toPromise = <T>(obj: T | PromiseLike<T>): Promise<T> => {
   return isPromise(obj) ? obj : Promise.resolve(obj);
 };
-const async = <T, TReturn, TNext>(gen: () => Generator<T, TReturn, TNext>) => {
+const async = <T, TReturn, TNext>(
+  gen: () => Generator<T, TReturn, TNext>
+): Promise<TReturn> => {
   const generator = gen();
   return new Promise<TReturn>((resolve, reject) => {
     onFulfilled();
-    function onFulfilled(res?: any) {
-      var ret = undefined;
+    function onFulfilled(res?: any): void {
+      let ret: any;
       try {
         ret = generator.next(res);
       } catch (error) {
@@ -19,8 +21,8 @@ const async = <T, TReturn, TNext>(gen: () => Generator<T, TReturn, TNext>) => {
       }
       next(ret);
     }
-    function onReject(error: any) {
-      var ret = undefined;
+    function onReject(error: any): void {
+      let ret: any;
       try {
         if (generator.throw) {
           ret = generator.throw(error);
